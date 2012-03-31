@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:paddingLeft="10dp"
+	android:paddingRight="5dp"
+	android:paddingTop="5dp"
+	android:paddingBottom="5dp" >
+    
+    <TextView android:id="@+id/apk"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="1.63 cl/kr" />
+
+    <TextView android:id="@+id/name1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/apk"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Sofiero" />
+    
+    <TextView android:id="@+id/name2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name1"
+        android:layout_toLeftOf="@id/apk"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Andrés favorit!" />
+
+</RelativeLayout>
