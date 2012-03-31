@@ -1,3 +1,4 @@
+gen/
 bin/
 proguard/
 .DS_Store
