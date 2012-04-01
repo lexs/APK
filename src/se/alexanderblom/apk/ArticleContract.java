@@ -8,7 +8,7 @@ public class ArticleContract {
 	public static final String CONTENT_AUTHORITY = "se.alexanderblom.apk";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY + "/article");
 	
-	public static final String DEFAULT_SORT_ORDER = Columns.APK + " ASC";
+	public static final String DEFAULT_SORT_ORDER = "IFNULL(" + Columns.APK + ", 99999999) ASC";
 	
 	public interface Columns extends BaseColumns {
 		static final String NAME = "name";

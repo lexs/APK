@@ -160,9 +160,15 @@ public class ArticlesActivity extends FragmentActivity implements LoaderCallback
 			holder.name1.setText(name1);
 			holder.name2.setText(info);
 			
-			String apkText = context.getString(R.string.apk_text, apk);
+			if (apk == 0f) {
+				holder.apk.setText(R.string.apk_text_infinity);
+			} else {
+				String apkText = context.getString(R.string.apk_text, apk);
+				holder.apk.setText(apkText);
+			}
 			
-			holder.apk.setText(apkText);
+			
+			
 		}
 		
 		private static class Holder {
