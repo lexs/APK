@@ -1,29 +1,19 @@
 package se.alexanderblom.apk;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import se.alexanderblom.apk.ArticleContract.Columns;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
-
-import com.google.common.io.InputSupplier;
-import com.google.common.io.LineReader;
 
 public class ArticlesProvider extends ContentProvider {
-	private static final String TAG = "ArticlesProvider";
+	private static final String DATABASE_NAME = "articles.db";
+	private static final int DATABASE_VERSION = 1;
 	
 	private static final String TABLE_NAME = "articles";
 	
@@ -32,8 +22,8 @@ public class ArticlesProvider extends ContentProvider {
     
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     
-    private DatabaseHelper openHelper;
-    
+    private AssetDBOpenHelper openHelper;
+
     static {
     	uriMatcher.addURI(ArticleContract.CONTENT_AUTHORITY, "article", ARTICLES);
     	uriMatcher.addURI(ArticleContract.CONTENT_AUTHORITY, "article/#", ARTICLES_ID);
@@ -41,7 +31,7 @@ public class ArticlesProvider extends ContentProvider {
 	
 	@Override
 	public boolean onCreate() {
-		openHelper = new DatabaseHelper(getContext());
+		openHelper = new AssetDBOpenHelper(getContext(), DATABASE_NAME, DATABASE_NAME, null, DATABASE_VERSION);
 		
 		return true;
 	}
@@ -148,129 +138,5 @@ public class ArticlesProvider extends ContentProvider {
 
 	private void notifyChange(Uri uri) {
 		getContext().getContentResolver().notifyChange(uri, null);
-	}
-
-	private static class DatabaseHelper extends SQLiteOpenHelper {
-		private static final String DATABASE_NAME = "articles.db";
-		private static final int DATABASE_VERSION = 1;
-
-		private Context context;
-		private String dbPath;
-		
-		public DatabaseHelper(Context context) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
-			
-			this.context = context;
-			
-			dbPath = context.getDatabasePath(DATABASE_NAME).getAbsolutePath();
-			Log.d(TAG, "db path: " + dbPath);
-			
-			//SQLiteDatabase db = getWritableDatabase();
-			//db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-			//onCreate(db);
-			
-		}
-
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			db.execSQL("CREATE TABLE " + TABLE_NAME + "("
-					+ Columns._ID + " INTEGER PRIMARY KEY,"
-					+ Columns.NAME + " TEXT,"
-					+ Columns.NAME2 + " TEXT,"
-					+ Columns.PRICE + " REAL,"
-					+ Columns.VOLUME + " REAL,"
-					+ Columns.PRICE_PER_LITER + " REAL,"
-					+ Columns.PRODUCT_GROUP + " TEXT,"
-					+ Columns.PACKAGING + " TEXT,"
-					+ Columns.ORIGIN + " TEXT,"
-					+ Columns.ORIGIN_COUNTRY + " TEXT,"
-					+ Columns.PRODUCER + " TEXT,"
-					+ Columns.DISTRIBUTOR + " TEXT,"
-					+ Columns.YEAR + " INTEGER,"
-					+ Columns.ALCOHOL_PERCENTAGE + " REAL,"
-					+ Columns.INGREDIENTS + " TEXT,"
-					+ Columns.APK + " REAL"
-					+ ")");
-			
-			try {
-				InputStream in = context.getAssets().open("database.sql");
-				InputStreamReader reader = new InputStreamReader(in, "utf-8");
-				LineReader lineReader = new LineReader(reader);
-				
-				String line;
-				while ((line = lineReader.readLine()) != null) {
-					try {
-						if (!TextUtils.isEmpty(line)) {
-							db.execSQL(line);
-						}
-					} catch (SQLException e) {
-						Log.e(TAG, "Failed to execute sql: ", e);
-					}
-				}
-				
-				db.execSQL("CREATE INDEX apk_index ON " + TABLE_NAME + " ("+ Columns.APK +");");
-			} catch (IOException e) {
-				Log.e(TAG, "Failed to create database", e);
-			}
-			
-			
-			/*try {
-				InputStream in = context.getAssets().open(DATABASE_NAME);
-				File out = context.getDatabasePath(DATABASE_NAME);
-				
-				Files.copy(new Supplier(in), out);
-				
-				//Access the copied database so SQLiteHelper will cache it and mark it as created.
-				//getWritableDatabase().close();
-				//getWritableDatabase();
-			} catch (IOException e) {
-				Log.e(TAG, "Failed to copy database", e);
-			}*/
-			
-			
-			
-			
-			
-			/*db.execSQL("CREATE TABLE " + TABLE_NAME + "("
-					+ Columns._ID + " INTEGER PRIMARY KEY,"
-					+ Columns.NAME + " TEXT,"
-					+ Columns.NAME2 + " TEXT,"
-					+ Columns.PRICE + " REAL,"
-					+ Columns.VOLUME + " REAL,"
-					+ Columns.PRICE_PER_LITER + " REAL,"
-					+ Columns.PRODUCT_GROUP + " TEXT,"
-					+ Columns.PACKAGING + " TEXT,"
-					+ Columns.ORIGIN + " TEXT,"
-					+ Columns.ORIGIN_COUNTRY + " TEXT,"
-					+ Columns.PRODUCER + " TEXT,"
-					+ Columns.DISTRIBUTOR + " TEXT,"
-					+ Columns.ALCOHOL_PERCENTAGE + " REAL,"
-					+ Columns.INGREDIENTS + " TEXT,"
-					+ Columns.APK + " REAL"
-					+ ")");*/
-		}
-
-		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.d(TAG, "Upgrading database from version " + oldVersion + "to version " + newVersion
-				+ ". Which will destroy all old data");
-	        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-	        onCreate(db);
-		}
-		
-		private static class Supplier implements InputSupplier<InputStream> {
-			private InputStream is;
-			
-			public Supplier(InputStream is) {
-				this.is = is;
-			}
-
-			@Override
-			public InputStream getInput() throws IOException {
-				return is;
-			}
-			
-		}
-
 	}
 }

@@ -1,0 +1,1 @@
+CREATE TABLE articles(_id INTEGER PRIMARY KEY,name TEXT,name2 TEXT,price REAL,volume REAL,price_per_liter REAL,product_group TEXT,packaging TEXT,origin TEXT,origin_country TEXT,producer TEXT,distributor TEXT,year INTEGER,alcohol_percentage REAL,ingredients TEXT,apk REAL);
