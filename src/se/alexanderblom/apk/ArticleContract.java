@@ -22,6 +22,7 @@ public class ArticleContract {
 		static final String ORIGIN_COUNTRY = "origin_country";
 		static final String PRODUCER = "producer";
 		static final String DISTRIBUTOR = "distributor";
+		static final String YEAR = "year";
 		static final String ALCOHOL_PERCENTAGE = "alcohol_percentage";
 		static final String INGREDIENTS = "ingredients";
 		static final String APK = "apk";

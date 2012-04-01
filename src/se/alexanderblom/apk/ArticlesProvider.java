@@ -173,10 +173,27 @@ public class ArticlesProvider extends ContentProvider {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			//db.close();
+			db.execSQL("CREATE TABLE " + TABLE_NAME + "("
+					+ Columns._ID + " INTEGER PRIMARY KEY,"
+					+ Columns.NAME + " TEXT,"
+					+ Columns.NAME2 + " TEXT,"
+					+ Columns.PRICE + " REAL,"
+					+ Columns.VOLUME + " REAL,"
+					+ Columns.PRICE_PER_LITER + " REAL,"
+					+ Columns.PRODUCT_GROUP + " TEXT,"
+					+ Columns.PACKAGING + " TEXT,"
+					+ Columns.ORIGIN + " TEXT,"
+					+ Columns.ORIGIN_COUNTRY + " TEXT,"
+					+ Columns.PRODUCER + " TEXT,"
+					+ Columns.DISTRIBUTOR + " TEXT,"
+					+ Columns.YEAR + " INTEGER,"
+					+ Columns.ALCOHOL_PERCENTAGE + " REAL,"
+					+ Columns.INGREDIENTS + " TEXT,"
+					+ Columns.APK + " REAL"
+					+ ")");
 			
 			try {
-				InputStream in = context.getAssets().open("database.txt");
+				InputStream in = context.getAssets().open("database.sql");
 				InputStreamReader reader = new InputStreamReader(in, "utf-8");
 				LineReader lineReader = new LineReader(reader);
 				
