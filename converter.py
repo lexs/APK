@@ -48,17 +48,15 @@ mappings = {
 }
 
 def convert(input, output):
-	f = open(output, 'w')
-
 	tree = ET.parse(input)
 	articles = tree.getiterator('artikel')
 	for article in articles:
 		values = get_values(article)
 		statement = get_insert_statement(values)
 
-		f.write(statement.encode('utf-8'))
+		output.write(statement.encode('utf-8'))
 
-	f.close()
+	output.close()
 
 def get_values(article):
 	values = defaultdict(lambda: 'NULL')
@@ -103,10 +101,13 @@ def convert_percentage(value):
 	return value
 
 if __name__ == "__main__":
-	output = 'database.sql'
+	input = sys.stdin
+	output = sys.stdout
 	if len(sys.argv) >= 2:
 		input = sys.argv[1]
+		input = open(input)
 	if len(sys.argv) == 3:
 		output = sys.argv[2]
+		f = open(output, 'w')
 
 	convert(input, output)
