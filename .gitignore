@@ -1,4 +1,5 @@
 gen/
 bin/
 proguard/
-.DS_Store
+*.pyc
+*.DS_Store
