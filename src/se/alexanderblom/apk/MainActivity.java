@@ -30,8 +30,8 @@ public class MainActivity extends FragmentActivity {
 	public void niceWine(View v) {
 		Intent intent = new Intent(this, ArticlesActivity.class);
 		
-		intent.putExtra(ArticlesActivity.EXTRA_SELECTION, "product_group LIKE ?");
-		intent.putExtra(ArticlesActivity.EXTRA_SELECTION_ARGS, new String[] { "%vin%" });
+		intent.putExtra(ArticlesActivity.EXTRA_SELECTION, "category IN (?,?)");
+		intent.putExtra(ArticlesActivity.EXTRA_SELECTION_ARGS, new String[] { "Vitt vin", "Rštt vin" });
 		
 		startActivity(intent);
 	}
