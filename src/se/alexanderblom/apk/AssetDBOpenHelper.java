@@ -24,23 +24,20 @@ public class AssetDBOpenHelper {
 	private String databaseName;
 	private String databasePath;
 	private CursorFactory factory;
-	private DatabaseErrorHandler errorHandler;
+	//private DatabaseErrorHandler errorHandler;
 	private int version;
 	
 	
 	private SQLiteDatabase database;
-	
-	public AssetDBOpenHelper(Context context, String databaseName, String databasePath, CursorFactory factory, int version) {
-		this(context, databaseName, databasePath, factory, version, new DefaultDatabaseErrorHandler());
-	}
-	
+
 	public AssetDBOpenHelper(Context context, String databaseName, String databasePath, CursorFactory factory,
-			int version, DatabaseErrorHandler errorHandler) {
+			int version) {
+			//, DatabaseErrorHandler errorHandler) {
 		this.context = context;
 		this.databaseName = databaseName;
 		this.databasePath = databasePath;
 		this.factory = factory;
-		this.errorHandler = errorHandler;
+		//this.errorHandler = errorHandler;
 		this.version = version;
 	}
 	
@@ -81,7 +78,8 @@ public class AssetDBOpenHelper {
 	}
 	
 	private SQLiteDatabase openDatabase() {
-		return context.openOrCreateDatabase(databaseName, Context.MODE_PRIVATE, factory, errorHandler);
+		//return context.openOrCreateDatabase(databaseName, Context.MODE_PRIVATE, factory, errorHandler);
+		return context.openOrCreateDatabase(databaseName, Context.MODE_PRIVATE, factory);
 	}
 	
 	private SQLiteDatabase copyDatabase() throws IOException {
