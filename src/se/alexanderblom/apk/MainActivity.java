@@ -21,8 +21,8 @@ public class MainActivity extends FragmentActivity {
 	public void niceBeer(View v) {
 		Intent intent = new Intent(this, ArticlesActivity.class);
 		
-		intent.putExtra(ArticlesActivity.EXTRA_SELECTION, "product_group LIKE ?");
-		intent.putExtra(ArticlesActivity.EXTRA_SELECTION_ARGS, new String[] { "…l%" });
+		intent.putExtra(ArticlesActivity.EXTRA_SELECTION, "category=?");
+		intent.putExtra(ArticlesActivity.EXTRA_SELECTION_ARGS, new String[] { "…l" });
 		
 		startActivity(intent);
 	}

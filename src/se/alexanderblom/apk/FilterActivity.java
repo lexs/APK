@@ -18,7 +18,7 @@ public class FilterActivity extends FragmentActivity {
 	}
 	
 	public void setCurrentFilter(View v) {
-		setFilter("product_group=?", new String[] { "Vitt vin" });
+		setFilter("category=?", new String[] { "Vitt vin" });
 	}
 	
 	private void setFilter(String selection, String[] selectionArgs) {
