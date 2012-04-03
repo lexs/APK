@@ -1,4 +1,5 @@
 import sys
+import fileinput
 from collections import defaultdict, namedtuple
 
 import xml.etree.ElementTree as ET
@@ -18,7 +19,8 @@ schema = [
 	'distributor',
 	'year',
 	'alcohol_percentage',
-	'ingredients'
+	'ingredients',
+	'apk'
 ]
 
 def string(value):
@@ -48,15 +50,16 @@ mappings = {
 }
 
 def convert(input, output):
-	tree = ET.parse(input)
-	articles = tree.getiterator('artikel')
-	for article in articles:
-		values = get_values(article)
-		statement = get_insert_statement(values)
+	for event, elem in ET.iterparse(input):
+		if elem.tag == 'artikel':
+			values = get_values(elem)
 
-		output.write(statement.encode('utf-8'))
+			if not filter(values):
+				statement = get_insert_statement(values)
+				output.write(statement.encode('utf-8'))
 
-	output.close()
+	if output is not sys.stdout:
+		output.close()
 
 def get_values(article):
 	values = defaultdict(lambda: 'NULL')
@@ -69,7 +72,14 @@ def get_values(article):
 			if value:
 				values[key] = type(value)
 
+	values['apk'] = calculate_apk(values)
+
 	return values
+
+def filter(values):
+	# filter items with no apk, meaning they
+	# are non-alcoholic
+	return values['apk'] == 'NULL'
 
 def calculate_apk(values):
 	# volume in cl
@@ -84,30 +94,17 @@ def calculate_apk(values):
 		return price/alcohol
 
 def get_insert_statement(values):
-	apk = calculate_apk(values)
-
 	sorted = []
 
 	for column in schema:
 		value = values[column]
 		sorted.append(unicode(value))
 
-	# add apk
-	sorted.append(str(apk))
-
 	return 'INSERT INTO articles VALUES('+','.join(sorted)+');\n'
-
-def convert_percentage(value):
-	return value
 
 if __name__ == "__main__":
 	input = sys.stdin
-	output = sys.stdout
-	if len(sys.argv) >= 2:
-		input = sys.argv[1]
-		input = open(input)
-	if len(sys.argv) == 3:
-		output = sys.argv[2]
-		f = open(output, 'w')
+	if len(sys.argv) == 2:
+		input = open(sys.argv[1])
 
-	convert(input, output)
+	convert(input, sys.stdout)
