@@ -10,7 +10,13 @@ def percentage(value):
 	value = value.replace('%', '')
 	return float(value)/100
 
-def calculate_apk(values):
+def category(values):
+	group = values['product_group']
+	
+	# simply use the first part before ,
+	return group.split(',', 1)[0].strip()
+
+def apk(values):
 	# volume in cl
 	volume = values['volume']/10
 	percentage = values['alcohol_percentage']
@@ -21,7 +27,6 @@ def calculate_apk(values):
 	else:
 		alcohol = (volume*percentage)/0.4
 		return price/alcohol
-
 
 def filter(values):
 	# filter items with no apk, meaning they
@@ -60,6 +65,7 @@ schema = [
 	'year',
 	'alcohol_percentage',
 	'ingredients',
+	'category',
 	'apk'
 ]
 
@@ -79,7 +85,8 @@ mappings = {
 	'year': fromAttribute('Argang', int),
 	'alcohol_percentage': fromAttribute('Alkoholhalt', percentage),
 	'ingredients': fromAttribute('ingredients', unicode),
-	'apk': computedBy(calculate_apk)
+	'category': computedBy(category),
+	'apk': computedBy(apk)
 }
 
 if __name__ == "__main__":

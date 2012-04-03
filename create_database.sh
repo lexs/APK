@@ -11,4 +11,4 @@ sqlite3 $DB_NAME ".read schema.sql"
 curl $XML_FILE | python systemet_to_sql.py | sqlite3 $DB_NAME
 
 # Create indexes
-sqlite3 $DB_NAME "CREATE INDEX apk_index ON articles (apk)"
+sqlite3 $DB_NAME ".read indexes.sql"
