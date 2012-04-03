@@ -6,9 +6,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 public class FilterActivity extends FragmentActivity {
-	public static final String EXTRA_SELECTION = "selection";
-	public static final String EXTRA_SELECTION_ARGS = "selection_args";
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -16,10 +13,18 @@ public class FilterActivity extends FragmentActivity {
 		setContentView(R.layout.activity_filter);
 	}
 	
-	public void setFilter(View v) {
+	public void clearFilter(View v) {
+		setFilter(null, null);
+	}
+	
+	public void setCurrentFilter(View v) {
+		setFilter("product_group=?", new String[] { "Vitt vin" });
+	}
+	
+	private void setFilter(String selection, String[] selectionArgs) {
 		Intent data = new Intent();
-		data.putExtra(EXTRA_SELECTION, "product_group=?");
-		data.putExtra(EXTRA_SELECTION_ARGS, new String[] { "Vitt vin" });
+		data.putExtra(ArticlesActivity.EXTRA_SELECTION, selection);
+		data.putExtra(ArticlesActivity.EXTRA_SELECTION_ARGS, selectionArgs);
 		
 		setResult(RESULT_OK, data);
 		finish();

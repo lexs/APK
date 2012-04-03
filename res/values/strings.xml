@@ -4,4 +4,6 @@
     <string name="app_name">APK</string>
     <string name="apk_text">%.2f kr/cl</string>
     <string name="apk_text_infinity">∞ kr/cl</string>
+    <string name="clear">Clear</string>
+    <string name="filter">Filter</string>
 </resources>

@@ -33,6 +33,9 @@ public class ArticlesActivity extends FragmentActivity implements LoaderCallback
 	
 	private static int REQUEST_FILTER = 1;
 	
+	public static final String EXTRA_SELECTION = "selection";
+	public static final String EXTRA_SELECTION_ARGS = "selection_args";
+	
 	private ListView listView;
 	private CursorAdapter adapter;
 	
@@ -59,6 +62,8 @@ public class ArticlesActivity extends FragmentActivity implements LoaderCallback
 			}
 		});
 		
+		setFilter(getIntent());
+		
 		getSupportLoaderManager().initLoader(0, null, this);
 	}
 
@@ -72,6 +77,8 @@ public class ArticlesActivity extends FragmentActivity implements LoaderCallback
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.menu_search:
+				break;
 			case R.id.menu_filter:
 				startFilterActivity();
 				break;
@@ -85,11 +92,15 @@ public class ArticlesActivity extends FragmentActivity implements LoaderCallback
 	@Override
 	protected void onActivityResult(int requstCode, int resultCode, Intent data) {
 		if (requstCode == REQUEST_FILTER && resultCode == RESULT_OK) {
-			String selection = data.getStringExtra(FilterActivity.EXTRA_SELECTION);
-			String args[] = data.getStringArrayExtra(FilterActivity.EXTRA_SELECTION_ARGS);
-			
-			setFilter(selection, args);
+			setFilter(data);
 		}
+	}
+	
+	private void setFilter(Intent intent) {
+		String selection = intent.getStringExtra(EXTRA_SELECTION);
+		String args[] = intent.getStringArrayExtra(EXTRA_SELECTION_ARGS);
+		
+		setFilter(selection, args);
 	}
 	
 	private void setFilter(String selection, String[] selectionArgs) {

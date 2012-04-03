@@ -4,10 +4,34 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <Button 
+    <View
         android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:text="OK"
-    	android:onClick="setFilter"/>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button android:id="@+id/clear"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/clear"
+            android:onClick="clearFilter" />
+
+        <Button android:id="@+id/dismiss"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/filter"
+            android:onClick="setCurrentFilter" />
+    </LinearLayout>
 
 </LinearLayout>

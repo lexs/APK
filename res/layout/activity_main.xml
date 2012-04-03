@@ -14,5 +14,17 @@
         android:layout_height="wrap_content"
         android:onClick="sortByAPK"
         android:text="APK" />
+    
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="niceBeer"
+        android:text="Öl" />
+    
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="niceWine"
+        android:text="Vin" />
 
 </LinearLayout>
