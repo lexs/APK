@@ -30,8 +30,8 @@ def apk(values):
 
 def filter(values):
 	# filter items with no apk, meaning they
-	# are non-alcoholic
-	return not values['apk']
+	# are non-alcoholic or items that are larger than 5l
+	return not values['apk'] or values['volume'] >= 5000
 
 def create_sql_insert(values):
 	sorted = []
